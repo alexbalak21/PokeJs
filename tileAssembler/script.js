@@ -1,3 +1,5 @@
+//CONFIG
+
 const canvas = document.querySelector("canvas")
 
 const width = 12 * 16 * 4
