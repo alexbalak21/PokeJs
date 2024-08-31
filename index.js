@@ -48,15 +48,36 @@ collisionsMap.forEach((row, y) => {
 })
 
 class Sprite {
-  constructor({position, image}) {
+  constructor({position, image, frames = {max: 1}}) {
     this.position = position
     this.image = image
+    this.frames = frames
   }
 
   draw() {
-    c.drawImage(this.image, this.position.x, this.position.y)
+    c.drawImage(
+      this.image,
+      0,
+      0,
+      this.image.width / this.frames.max,
+      this.image.height,
+      this.position.x,
+      this.position.y,
+      this.image.width / this.frames.max,
+      this.image.height
+    )
   }
 }
+const player = new Sprite({
+  position: {
+    x: canvas.width / 2 - 192 / 4 / 2,
+    y: canvas.height / 2 - 68 / 2,
+  },
+  frames: {
+    max: 4,
+  },
+  image: playerImage,
+})
 
 const background = new Sprite({
   position: {
@@ -87,17 +108,8 @@ function animate() {
   background.draw()
   // boundaries.forEach((boundary) => boundary.draw())
   testBoundary.draw()
-  c.drawImage(
-    playerImage,
-    0,
-    0,
-    playerImage.width / 4,
-    playerImage.height,
-    canvas.width / 2 - playerImage.width / 4 / 2,
-    canvas.height / 2 - playerImage.height / 2,
-    playerImage.width / 4,
-    playerImage.height
-  )
+  player.draw()
+
   if (keys.down && lastKey === "down") {
     movables.forEach((movable) => (movable.position.y -= 3))
   } else if (keys.up && lastKey === "up") {
